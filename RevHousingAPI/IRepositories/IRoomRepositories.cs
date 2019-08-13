@@ -8,8 +8,11 @@ namespace RevHousingAPI.IRepositories
 {
     public interface IRoomRepository : IRepository<Room>
     {
-        Room GetRoomWithLocation(int id);
+        Room Get(int id);
 
-        bool RemoveRoom(int id);
+        IEnumerable<Room> GetAll();
+
+        void Add(Room room);
+        void Update(Room room);
     }
 }

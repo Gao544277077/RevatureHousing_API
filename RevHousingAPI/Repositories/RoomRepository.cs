@@ -9,31 +9,60 @@ using RevHousingAPI.Data;
 
 namespace RevHousingAPI.Repositories
 {
-    public class RoomRepository : Repository<Room>, IRoomRepository
+    public class RoomRepository : IRoomRepository
     {
-        private readonly ApplicationDBContext Context;
-        public RoomRepository(ApplicationDBContext context) : base(context)
+
+        //    private readonly ApplicationDBContext Context;
+        //    public RoomRepository(ApplicationDBContext context) : base(context)
+        //    {
+        //        Context = context;
+        //    }
+        //    public Room GetRoomWithLocation(int id)
+        //    {
+        //        return ApplicationDBContext.Room.Include(a => a.LocationID).SingleOrDefault(a => a.LocationID == id);
+        //    }
+        //    public ApplicationDBContext ApplicationDBContext
+        //    {
+        //        get { return Context as ApplicationDBContext; }
+        //    }
+
+        //    public bool RemoveRoom(int id)
+        //    {
+        //        Room room = Context.Room.Find(id);
+        //        if (room == null)
+        //        {
+        //            return false;
+        //        }
+        //        Context.Room.Remove(room);
+        //        return true;
+        //    }
+        //}
+        public RoomRepository()
         {
-            Context = context;
+            RoomDummyData dummyRoomsData = new RoomDummyData();
+            dummyRooms = dummyRoomsData.RoomsList;
         }
-        public Room GetRoomWithLocation(int id)
+        public List<Room> dummyRooms;
+        public void Add(Room room)
         {
-            return ApplicationDBContext.Room.Include(a => a.LocationID).SingleOrDefault(a => a.LocationID == id);
-        }
-        public ApplicationDBContext ApplicationDBContext
-        {
-            get { return Context as ApplicationDBContext; }
+            dummyRooms.Add(room);
         }
 
-        public bool RemoveRoom(int id)
+        public Room Get(int id)
         {
-            Room room = Context.Room.Find(id);
-            if (room == null)
-            {
-                return false;
-            }
-            Context.Room.Remove(room);
-            return true;
+            return dummyRooms.Find(n => n.RoomID == id);
+        }
+
+        public IEnumerable<Room> GetAll()
+        {
+            return dummyRooms;
+        }
+
+        public void Update(Room room)
+        {
+            int idToUpdate = room.RoomID;
+            int updateIndex = dummyRooms.FindIndex(n => n.RoomID == idToUpdate);
+            dummyRooms[updateIndex] = room;
         }
     }
 }

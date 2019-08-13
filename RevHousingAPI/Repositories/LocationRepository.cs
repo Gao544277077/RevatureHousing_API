@@ -9,32 +9,62 @@ using RevHousingAPI.Data;
 
 namespace RevHousingAPI.Repositories
 {
-    public class LocationRepository : Repository<Location>, ILocationRepository
+    //public class LocationRepository : Repository<Location>, ILocationRepository
+    //{
+    //    private readonly ApplicationDBContext Context;
+    //    public LocationRepository(ApplicationDBContext context) : base(context)
+    //    {
+    //        Context = context;
+    //    }
+
+    //    public bool RemoveLocation(int id)
+    //    {
+    //        Location location = Context.Location.Find(id);
+    //        if (location == null)
+    //        {
+    //            return false;
+    //        }
+    //        Context.Location.Remove(location);
+    //        return true;
+    //    }
+    //    public IEnumerable<Location> GetAllLocations()
+    //    {          
+    //        return Context.Location.ToList();
+
+    //    }
+    //    public IEnumerable<Location> GetLocationByTraningCenter(string TrainingCenter)
+    //    {
+    //        return Context.Location.Where(c => c.TrainingCenter == TrainingCenter);
+    //    }
+    //}
+    public class LocationRepository : ILocationRepository
     {
-        private readonly ApplicationDBContext Context;
-        public LocationRepository(ApplicationDBContext context) : base(context)
+        public LocationRepository()
         {
-            Context = context;
+            LocationDummyData dummyLocationData = new LocationDummyData();
+            locationList = dummyLocationData.LocationsList;
+        }
+        public List<Location> locationList;
+
+        public void Add(Location location)
+        {
+            locationList.Add(location);
         }
 
-        public bool RemoveLocation(int id)
+        public Location Get(int id)
         {
-            Location location = Context.Location.Find(id);
-            if (location == null)
-            {
-                return false;
-            }
-            Context.Location.Remove(location);
-            return true;
+            return locationList.Find(b => b.LocationID == id);
         }
-        public IEnumerable<Location> GetAllLocations()
-        {          
-            return Context.Location.ToList();
 
-        }
-        public IEnumerable<Location> GetLocationByTraningCenter(string TrainingCenter)
+        public IEnumerable<Location> GetAll()
         {
-            return Context.Location.Where(c => c.TrainingCenter == TrainingCenter);
+            return locationList;
+        }
+
+        public void Update(Location location)
+        {
+            int index = locationList.IndexOf(location);
+            locationList[index] = location;
         }
     }
 }
